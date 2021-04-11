@@ -1,7 +1,7 @@
 require 'gosu'
 
 class GameWindow < Gosu::Window
-    def initialize(width=320, height=240, fullscreen=false)
+    def initialize(width=820, height=740, fullscreen=false)
         super
         self.caption = 'Hola'
         @message = Gosu::Image.from_text(
