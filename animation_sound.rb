@@ -14,10 +14,17 @@ class Expplosion
         )
     end
 
-    def initialize(animation, x, y)
+    def self.load_sound(window)
+        Gosu::Sample.new(
+            window, media_path('explosion.mp3')
+        )    
+    end
+
+    def initialize(animation, sound, x, y)
         @animation = animation
         @x, @y = x, y
         @current_frame = 0
+        sound.play
     end
 
     def update 
@@ -35,6 +42,10 @@ class Expplosion
 
     def done? 
         @done ||= @current_frame == @animation.size
+    end
+
+    def sound
+        @sound.play
     end
 
     private
@@ -62,6 +73,12 @@ class GameWindow < Gosu::Window
             self, BACKGROUND, false
         )
         @animation = Expplosion.load_animation(self)
+        @music = Gosu::Song.new(
+            self, media_path('menu_music.mp3')
+        )
+        @music.volume = 0.5
+        @music.play(true)
+        @sound = Expplosion.load_sound(self)
         @explosions = []
     end
 
@@ -75,7 +92,7 @@ class GameWindow < Gosu::Window
         if id == Gosu::MsLeft
             @explosions.push(
                 Expplosion.new(
-                    @animation, mouse_x, mouse_y
+                    @animation, @sound, mouse_x, mouse_y
                 )
             )
         end
